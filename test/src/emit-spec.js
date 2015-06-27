@@ -7,20 +7,20 @@ describe('Emit', () => {
     let helloWorldWithRegex;
 
     beforeEach(() => {
-        emmitter = emit();
+        emitter = emit();
         helloWorldWithString = jasmine.createSpy('helloWorldWithString');
         helloWorldWithCallback = jasmine.createSpy('helloWorldWithCallback');
         helloWorldWithRegex = jasmine.createSpy('helloWorldWithRegex');
 
-        emmitter.on('hello.world', helloWorldWithString);
-        emmitter.on((event) => {
+        emitter.on('hello.world', helloWorldWithString);
+        emitter.on((event) => {
             return event.substr(0, 'hello.'.length) === 'hello.';
         }, helloWorldWithCallback);
-        emmitter.on(/^hello\.(world)?$/, helloWorldWithRegex);
+        emitter.on(/^hello\.(world)?$/, helloWorldWithRegex);
     });
 
     it('should trigger some listeners for a given event #1', (done) => {
-        emmitter.emit('hello.world', 'foo', 'bar').then(() => {
+        emitter.emit('hello.world', 'foo', 'bar').then(() => {
             expect(helloWorldWithString).toHaveBeenCalledWith('foo', 'bar');
             expect(helloWorldWithCallback).toHaveBeenCalledWith('foo', 'bar');
             expect(helloWorldWithRegex).toHaveBeenCalledWith('foo', 'bar');
@@ -32,7 +32,7 @@ describe('Emit', () => {
     });
 
     it('should trigger some listeners for a given event #2', (done) => {
-        emmitter.emit('hello.', 'again').then(() => {
+        emitter.emit('hello.', 'again').then(() => {
             expect(helloWorldWithString).not.toHaveBeenCalled();
             expect(helloWorldWithCallback).toHaveBeenCalledWith('again');
             expect(helloWorldWithRegex).toHaveBeenCalledWith('again');
@@ -41,7 +41,7 @@ describe('Emit', () => {
     });
 
     it('should trigger some listeners for a given event #3', (done) => {
-        emmitter.emit('hello.w', 'again').then(() => {
+        emitter.emit('hello.w', 'again').then(() => {
             expect(helloWorldWithString).not.toHaveBeenCalled();
             expect(helloWorldWithCallback).toHaveBeenCalledWith('again');
             expect(helloWorldWithRegex).not.toHaveBeenCalled();
@@ -50,8 +50,8 @@ describe('Emit', () => {
     });
 
     it('should remove all listeners when removeAllListeners is called', (done) => {
-        emmitter.removeAllListeners();
-        emmitter.emit('hello.world').then(() => {
+        emitter.removeAllListeners();
+        emitter.emit('hello.world').then(() => {
             expect(helloWorldWithString).not.toHaveBeenCalled();
             expect(helloWorldWithCallback).not.toHaveBeenCalled();
             expect(helloWorldWithRegex).not.toHaveBeenCalled();
@@ -62,10 +62,10 @@ describe('Emit', () => {
     it('should trigger only once a listener registered with once method', (done) => {
         let goodbye = jasmine.createSpy('goodbye');
 
-        emmitter.once('goodbye', goodbye);
-        emmitter.emit('goodbye')
+        emitter.once('goodbye', goodbye);
+        emitter.emit('goodbye')
             .then(() => {
-                return emmitter.emit('goodbye');
+                return emitter.emit('goodbye');
             })
             .then(() => {
                 expect(goodbye.calls.count()).toBe(1);
@@ -77,13 +77,13 @@ describe('Emit', () => {
     it('should unregister a listener when the callback returned by on is called', (done) => {
         let goodbye = jasmine.createSpy('goodbye');
 
-        let remove = emmitter.on('goodbye', goodbye);
+        let remove = emitter.on('goodbye', goodbye);
 
-        emmitter.emit('goodbye')
+        emitter.emit('goodbye')
             .then(() => {
                 remove();
                 expect(remove).toThrow();
-                return emmitter.emit('goodbye');
+                return emitter.emit('goodbye');
             })
             .then(() => {
                 expect(goodbye.calls.count()).toBe(1);

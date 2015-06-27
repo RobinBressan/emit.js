@@ -94,6 +94,10 @@ emitter.emit('event').then(function() {
 });
 ```
 
+## Removing all listeners
+
+You can remove all listeners by calling the `removeAllListeners` method.
+
 # Development
 
 ## Installation
