@@ -1,12 +1,12 @@
 {
   "name": "emit.js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "repository": "https://github.com/RobinBressan/emit.js",
   "description": "Efficient minimalist event emitter in JavaScript.",
   "scripts": {
     "test": "make test"
   },
-  "main": "dist/emit.min.js",
+  "main": "src/emit.js",
   "author": "Robin Bressan <robin@buddey.net>",
   "license": "MIT",
   "devDependencies": {
