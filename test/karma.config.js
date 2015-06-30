@@ -20,8 +20,7 @@ module.exports = function(config) {
                     '../node_modules',
                     '../src',
                 ]
-            },
-            watch: true
+            }
         },
         webpackServer: {
             noInfo: true
